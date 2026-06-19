@@ -1,71 +1,73 @@
 # Bowling Game Test Plan
 
-## 1. Test Plan Overview
-This test plan verifies correctness, reliability, and maintainability of the ten-pin bowling scoring backend in `bowling_game.py`.
+## Overview
+This test plan explains how I tested the bowling backend and checked that it follows the business rules for ten-pin bowling. The code under test is in bowling_game.py.
 
-## 2. Objectives
-- Validate scoring logic against business rules for all 10 frames.
-- Confirm strike and spare bonus behavior, including chained strikes.
-- Validate 10th-frame bonus roll rules.
-- Ensure invalid inputs and invalid game states are rejected with clear errors.
-- Provide repeatable automated unit testing for regression detection.
+## What I wanted to confirm
+- Scoring is correct across all 10 frames.
+- Spare and strike bonuses are applied correctly.
+- 10th frame bonus roll rules are handled correctly.
+- Invalid input is rejected with clear errors.
+- The tests can be rerun any time to catch regressions.
 
-## 3. Scope
+## Scope
 In scope:
-- `BowlingGame.roll()` input and rule validation.
-- `BowlingGame.score()` for completed games.
-- Internal frame behavior for strike/spare/open-frame scoring.
+- BowlingGame.roll() validation and rule checking.
+- BowlingGame.score() calculation for full games.
+- Strike, spare, and open frame scoring behavior.
 
 Out of scope:
-- GUI behavior.
+- GUI features.
 - File/database input.
-- Multiplayer turn ordering.
+- Multiplayer player order.
 
-## 4. Test Approach
-- Technique: automated unit tests using Python `unittest`.
-- Level: unit-level backend logic.
-- Method: black-box tests from business rules + white-box tests for edge validation paths.
-- Regression strategy: run full suite on every code change.
+## Test approach
+- I used automated unit tests with Python unittest.
+- I focused on rule-based scenarios from the assignment brief.
+- I included positive tests and negative/validation tests.
+- I reran the full test suite after each meaningful code change.
 
-## 5. Test Environment
+## Test environment
 - OS: Windows
 - Language: Python 3.x
-- Test runner: `python test_bowling_game.py`
+- Command used: python test_bowling_game.py
 
-## 6. Entry and Exit Criteria
+## Entry and exit criteria
 Entry criteria:
-- Source code available and runnable.
-- Business rules understood and documented.
+- Source code is available and runs.
+- Business rules are understood.
 
 Exit criteria:
-- All designed tests executed.
-- 100% pass rate for current suite.
-- Identified defects fixed and retested.
-- Updated docs and git history recorded.
+- All planned tests are executed.
+- All tests pass.
+- Any discovered bugs are fixed and retested.
+- Documentation and commit history are updated.
 
-## 7. Risk Assessment
+## Risk assessment
 High risk:
-- Strike and spare bonus calculations can be off by one roll.
-- 10th-frame logic can allow invalid extra rolls.
+- Strike and spare bonus logic can easily be off by one roll.
+- 10th frame bonus logic can allow invalid extra rolls.
 
 Medium risk:
-- Incomplete game scoring may crash (index errors) instead of returning controlled feedback.
+- Incomplete games might crash during scoring if not validated first.
 
 Low risk:
-- Simple open-frame arithmetic.
+- Basic open-frame addition.
 
 Mitigation:
-- Add targeted unit tests for each high-risk rule path.
-- Enforce defensive validation in `roll()` and completion checks in `score()`.
+- Add targeted tests for high-risk scoring paths.
+- Validate roll sequence in roll().
+- Check game completion before allowing score().
 
-## 8. Defect Management
-- Log defects during test execution.
-- Fix defect in smallest safe change.
-- Add or update test to prevent recurrence.
-- Re-run complete suite after each fix.
+## Defect handling process
+- Run tests and note any failures.
+- Identify the root cause.
+- Apply smallest safe fix.
+- Add/update tests so the issue does not return.
+- Run all tests again.
 
-## 9. Coverage Summary
-The final suite covers:
+## Coverage summary
+My final suite covers:
 - Gutter game
 - All ones
 - Spare scoring
@@ -73,16 +75,16 @@ The final suite covers:
 - Consecutive strikes
 - Perfect game (300)
 - All spares (150)
-- 10th-frame spare bonus
-- 10th-frame strike bonus
-- Invalid pins (<0, >10)
+- 10th frame spare bonus
+- 10th frame strike bonus
+- Invalid pins (<0 and >10)
 - Invalid frame totals
-- Invalid 10th bonus combinations
-- Rolling after game complete
-- Scoring incomplete game
+- Invalid 10th frame bonus combinations
+- Rolling after game completion
+- Scoring an incomplete game
 
-## 10. Traceability (Business Rule -> Tests)
-- Basic frame scoring -> `test_gutter_game`, `test_all_ones`
-- Spare bonus rule -> `test_spare`, `test_all_spares`, `test_tenth_frame_spare_bonus`
-- Strike bonus rule -> `test_single_strike`, `test_consecutive_strikes`, `test_perfect_game`, `test_tenth_frame_strike_bonus`
-- Validation and robustness -> remaining negative tests
+## Traceability from business rules to tests
+- Basic frame scoring: test_gutter_game, test_all_ones
+- Spare rule: test_spare, test_all_spares, test_tenth_frame_spare_bonus
+- Strike rule: test_single_strike, test_consecutive_strikes, test_perfect_game, test_tenth_frame_strike_bonus
+- Validation and robustness: remaining negative tests
